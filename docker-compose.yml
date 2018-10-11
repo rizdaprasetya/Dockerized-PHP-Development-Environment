@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db1
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: root
+    volumes:
+      # Mysql database and config will be persisted to /mysql_volume/
+      - ./mysql_volume:/var/lib/mysql
+      # If you want to run a initial query after container start
+      # - ./config_override/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "13306:3306"
+  php_web:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/php7.2/Dockerfile
+    image: php_web
+    container_name: php_web
+    depends_on:
+      - db
+    # If you want to run specific bash command after container start
+    # command: >
+    #  bash -c "echo 'You can runyour own command here'
+    #  && echo 'multiple command too'"
+    volumes:
+      # web files will be persisted to /web_volume/
+      - ./web_volume:/var/www/html/
+      # override and persist php.ini config
+      - ./config_override/php.ini:/usr/local/etc/php/php.ini
+      # override and persist apache config
+      - ./config_override/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      # if you need ioncube loader, it will be loaded from php.ini
+      - ./config_override/ioncube_loader/:/var/www/html/ioncube_loader/
+    ports:
+      - "10080:80"
+    stdin_open: true
+    tty: true

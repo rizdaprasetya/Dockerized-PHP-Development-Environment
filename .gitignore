@@ -1,0 +1,6 @@
+/mysql_volume/*
+!/mysql_volume/.gitkeep
+/web_volume/*
+!/web_volume/.gitkeep
+!/web_volume/info.php
+!/web_volume/adminer.php

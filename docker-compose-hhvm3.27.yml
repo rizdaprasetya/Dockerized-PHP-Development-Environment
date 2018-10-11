@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db1
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: root
+    volumes:
+      - ./mysql_volume:/var/lib/mysql
+      # - ./config_override/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "13306:3306"
+  hhvm327_web:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/hhvm3.27/Dockerfile
+    image: hhvm327_web
+    container_name: hhvm327_web
+    depends_on:
+      - db
+    #command: >
+    #  bash -c "echo 'You can runyour own command here'
+    #  && echo 'multiple command too'"
+    volumes:
+      - ./web_volume:/app/
+      - ./config_override/php.ini:/usr/local/etc/php/php.ini
+      - ./config_override/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./config_override/ioncube_loader/:/var/www/html/ioncube_loader/
+    ports:
+      - "10080:80"
+    stdin_open: true
+    tty: true
