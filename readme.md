@@ -29,6 +29,7 @@ Run docker compose and build `docker-compose -f docker-compose-hhvm3.27.yml up -
 Next time you can just run `docker-compose -f docker-compose-hhvm3.27.yml up -d`
 
 ### Accessing
+- Start writing your php app in `/web_volume` folder
 - Apache PHP (and your web app) are accessible on `http://localhost:10080`
 - Mysql / DB:
   - hostname `db` port `3306` from docker container (and php webapp).
