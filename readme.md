@@ -28,12 +28,14 @@ Next time you can just run `docker-compose -f docker-compose-php5.6.yml up -d`
 Run docker compose and build `docker-compose -f docker-compose-hhvm3.27.yml up --build -d` (only needed 1st time)
 Next time you can just run `docker-compose -f docker-compose-hhvm3.27.yml up -d`
 
+Docker compose will run 2 containers: `php_web` container and `db` (mysql) container.
+
 ### Accessing
 - Start writing your php app in `/web_volume` folder
 - Apache PHP (and your web app) are accessible on `http://localhost:10080`
 - Mysql / DB:
   - hostname `db` port `3306` from docker container (and php webapp).
-  - `localhost` port `13306` from outside, hostname.
+  - hostname `localhost` port `13306` from outside.
 - Sample PHP files are included, you can access using web browser:
   - http://localhost:10080/info.php - php info
   - http://localhost:10080/adminer.php - database management
@@ -45,9 +47,9 @@ Next time you can just run `docker-compose -f docker-compose-hhvm3.27.yml up -d`
 ### Advanced Access
 - If you need bash/terminal access to the container (just like ssh), you can run:
   - Php container `docker exec -it php_web bash`
-  - Mysql container `docker exec -it mysqldb bash` 
+  - Mysql container `docker exec -it db bash` 
 - The default user for mysql have limited access, to grant all privilege :
-  1. Login mysql as root `docker-compose exec mysqldb sh -c 'export MYSQL_PWD="$MYSQL_ROOT_PASSWORD"; mysql'`.
+  1. Login mysql as root `docker-compose exec db sh -c 'export MYSQL_PWD="$MYSQL_ROOT_PASSWORD"; mysql'`.
   2. Grant all DB access `GRANT ALL PRIVILEGES ON *.* TO 'user1';`
 
 # Configurations
