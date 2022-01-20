@@ -14,7 +14,7 @@ I personally use this to do plugin/module development for CMSes like Wordpress, 
 -  On docker Mac: Allow the folder of this project to be mounted as volume, go to: `Preference > Filesharing`. Add this project folder.
 
 # Usage
-Choose one of below:
+Choose one of below (depending on which PHP version you want to run. Option A is most recommended):
 
 #### A) Running PHP 7.2
 Run docker compose and build `docker-compose up --build -d` (only needed 1st time)
@@ -31,22 +31,24 @@ Next time you can just run `docker-compose -f docker-compose-hhvm3.27.yml up -d`
 Docker compose will run 2 containers: `php_web` container and `db` (mysql) container.
 
 ### Accessing
-- Start writing your php app in `/web_volume` folder
+- Start writing (or placing) your php web app in `/web_volume` folder
 - Apache PHP (and your web app) are accessible on `http://localhost:11080`
 - Mysql / DB:
-  - hostname `db` port `3306` from docker container (and php webapp).
-  - hostname `localhost` port `13306` from outside.
+  - hostname `db` port `3306` from docker container (and php webapp that you place inside web_volume).
+    - So for example, if you place WordPress (WP) instalation in web_volume folder, when WP installation/configuration asked for DB connection you can use these (default) values. Mysql db hostname `db`; port `3306`; username `user1`; password `root`;.
+  - hostname `localhost` port `13306` from outside container.
+    - Useful if you want to access the DB from Mysql Desktop app client or client that is from outside the container network.
 - Sample PHP files are included, you can access using web browser:
   - http://localhost:11080/info.php - php info
   - http://localhost:11080/adminer.php - database management 
-    - Sample credentials to login:
-      - Server `db`
+    - Sample credentials to login to DB from Adminer:
+      - Server `db` (because the app is trying to connect from internal php_web container)
       - Username `root`
       - Password `root`
 
 ### Stopping
-- To stop run `docker-compose stop`
-- To stop and remove container `docker-compose down`
+- To stop, run `docker-compose stop`
+- To stop and remove container, run `docker-compose down`
 
 ### Advanced Access
 - If you need bash/terminal access to the container (just like ssh), you can run:
@@ -80,9 +82,15 @@ Docker compose will run 2 containers: `php_web` container and `db` (mysql) conta
 # Notes
 - This is intended for development purpose, may not be suitable for production use.
 - Extension installed on PHP container is making the container size huge and slow to build. But those extension is commonly required by CMS. You can manually edit `Dockerfile`s to suit your needs.
+- The advantage of using container based PHP environment is that (suppose you have written/installed your PHP web app within web file directory, & mysql db file is saved on db directory, then) you can just copy it to other machine/PC/VM and run the same docker container, and the app & db state will be the same. You can continue to have your app working. Without worrying about system environment/dependency differences (as they are handled by the container).
 - Important Changes:
   - php_web container port changed from `10080` to `11080`.
     - Previously php_web container was using port 10080, but Chrome (and other) browsers [started blocking that port](https://chromestatus.com/feature/6510270304223232) (`ERR_UNSAFE_PORT`). So php_web container port is now changed to 11080. Less convenience but unfortunately required to work around it.
 
-# TODO
-- update default docker-compose.yml PHP version to latest 7.4 & should add PHP 8 too.
+# Advanced: Further Developing This Repo/Tool
+This section is for maintainer/developer of the repo, not for end user.
+- When you change/edit Dockerfile(s), you should build the container before running docker compose.
+
+## TODO
+- update default docker-compose.yml PHP version to latest 7.4
+- should add PHP version 8.
