@@ -32,14 +32,14 @@ Docker compose will run 2 containers: `php_web` container and `db` (mysql) conta
 
 ### Accessing
 - Start writing your php app in `/web_volume` folder
-- Apache PHP (and your web app) are accessible on `http://localhost:10080`
+- Apache PHP (and your web app) are accessible on `http://localhost:11080`
 - Mysql / DB:
   - hostname `db` port `3306` from docker container (and php webapp).
   - hostname `localhost` port `13306` from outside.
 - Sample PHP files are included, you can access using web browser:
-  - http://localhost:10080/info.php - php info
-  - http://localhost:10080/adminer.php - database management
-  
+  - http://localhost:11080/info.php - php info
+  - http://localhost:11080/adminer.php - database management 
+
 ### Stopping
 - To stop run `docker-compose stop`
 - To stop and remove container `docker-compose down`
@@ -76,3 +76,9 @@ Docker compose will run 2 containers: `php_web` container and `db` (mysql) conta
 # Notes
 - This is intended for development purpose, may not be suitable for production use.
 - Extension installed on PHP container is making the container size huge and slow to build. But those extension is commonly required by CMS. You can manually edit `Dockerfile`s to suit your needs.
+- Important Changes:
+  - php_web container port changed from `10080` to `11080`.
+    - Previously php_web container was using port 10080, but Chrome (and other) browsers [started blocking that port](https://chromestatus.com/feature/6510270304223232) (`ERR_UNSAFE_PORT`). So php_web container port is now changed to 11080. Less convenience but unfortunately required to work around it.
+
+# TODO
+- update default docker-compose.yml PHP version to latest 7.4 & should add PHP 8 too.

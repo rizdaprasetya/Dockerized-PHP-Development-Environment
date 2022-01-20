@@ -31,6 +31,6 @@ services:
       - ./config_override/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./config_override/ioncube_loader/:/var/www/html/ioncube_loader/
     ports:
-      - "10080:80"
+      - "11080:80"
     stdin_open: true
     tty: true
