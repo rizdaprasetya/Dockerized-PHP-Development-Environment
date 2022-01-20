@@ -39,6 +39,10 @@ Docker compose will run 2 containers: `php_web` container and `db` (mysql) conta
 - Sample PHP files are included, you can access using web browser:
   - http://localhost:11080/info.php - php info
   - http://localhost:11080/adminer.php - database management 
+    - Sample credentials to login:
+      - Server `db`
+      - Username `root`
+      - Password `root`
 
 ### Stopping
 - To stop run `docker-compose stop`
