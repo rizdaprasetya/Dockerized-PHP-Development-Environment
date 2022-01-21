@@ -35,7 +35,7 @@ Docker compose will run 2 containers: `php_web` container and `db` (mysql) conta
 - Apache PHP (and your web app) are accessible on `http://localhost:11080`
 - Mysql / DB:
   - hostname `db` port `3306` from docker container (and php webapp that you place inside web_volume).
-    - So for example, if you place WordPress (WP) instalation in web_volume folder, when WP installation/configuration asked for DB connection you can use these (default) values. Mysql db hostname `db`; port `3306`; username `user1`; password `root`;.
+    - So for example, if you place WordPress (WP) instalation in web_volume folder, when WP installation/configuration asked for DB connection you can use these (default) values. Mysql db hostname `db`; port `3306`; username `user1`; password `root`; database `db1`.
   - hostname `localhost` port `13306` from outside container.
     - Useful if you want to access the DB from Mysql Desktop app client or client that is from outside the container network.
 - Sample PHP files are included, you can access using web browser:
